@@ -1,4 +1,9 @@
 <template lang="pug">
+transition(
+  enter-active-class="animate__animated animate__slideInRight"
+  leave-to-class="animate__animated animate__slideInLeft"
+  leave-active-class="animate__animated animate__slideInRight"
+)
   #verify.aa-container
     h1(class="aa-heading-1") Verify your email
     div(class="w-full mx-auto mt-6 text-left")

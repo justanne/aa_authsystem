@@ -2,7 +2,11 @@
 
   #app.flex
     .aa-main-layout
-      router-view
+      transition(
+        name="fade"
+        mode="out-in"
+      )
+        router-view
 
 </template>
 
@@ -29,6 +33,7 @@ input[type="password"],
 input[type="email"],
 input[type="text"],
 input[type="tel"] {
+  @apply shadow-none;
   @apply appearance-none;
   @apply rounded;
   @apply border-2;
@@ -37,6 +42,17 @@ input[type="tel"] {
   @apply text-gray-700;
   @apply transition duration-300 ease-in-out;
 
+  &.textfield-md {
+    @apply px-2;
+    @apply py-1;
+  }
+  &.border-field-error {
+    @apply border-orange-400;
+
+    &:hover {
+      @apply border-orange-200;
+    }
+  }
   &:hover {
     @apply border-purple-200;
   }
@@ -44,11 +60,7 @@ input[type="tel"] {
     @apply outline-none;
     @apply border-2;
     @apply border-purple-700;
-  }
-
-  &.textfield-md {
-    @apply px-2;
-    @apply py-1;
+    @apply shadow-none;
   }
 }
 .aa-main-layout {
@@ -90,11 +102,29 @@ input[type="tel"] {
     @apply py-2;
   }
   &:hover {
+    @apply cursor-pointer;
     @apply bg-purple-600;
   }
   &:active {
     @apply bg-purple-800;
   }
+}
+
+.aa-notif-error {
+  @apply bg-orange-200;
+  @apply border-orange-700;
+  @apply text-orange-700;
+  @apply px-2;
+  @apply py-1;
+  @apply rounded-sm;
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
 </style>

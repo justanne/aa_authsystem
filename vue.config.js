@@ -1,3 +1,5 @@
+const isProd = process.env.NODE_ENV === 'production'
+
 module.exports = {
   chainWebpack: config => {
      config.module
@@ -6,11 +8,15 @@ module.exports = {
       .use('pug-plain-loader')
         .loader('pug-plain-loader')
        .end()
+
       config.module
-      .rule('stylus')
-      .test(/\.styl(us)?$/)
-      .use('stylus-loader')
-        .loader('vue-loader','stylus-loader')
-       .end()
+      .rule('eslint')
+      .use('eslint-loader')
+        .tap(options => {
+          options.rules = {
+            'no-console': isProd ? 'error' : 'off'
+          }
+          return options
+        })
   }
 }
