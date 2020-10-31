@@ -27,7 +27,8 @@ label {
 }
 input[type="password"],
 input[type="email"],
-input[type="text"] {
+input[type="text"],
+input[type="tel"] {
   @apply appearance-none;
   @apply rounded;
   @apply border-2;
