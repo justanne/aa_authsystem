@@ -1,5 +1,5 @@
 <template lang="pug">
-  .aa-container
+  #register.aa-container
     h1(class="aa-heading-1") Register
       div(class="w-full mx-auto mt-6 text-left")
         label(for="email" class="w-full") Email
@@ -33,7 +33,8 @@
             type="password"
             class="textfield-md block my-2 mb-4"
           )
-        a.btn.btn-md.block.mt-8.w-full(href="#") Register
+        //- a.btn.btn-md.block.mt-8.w-full(href="#" @click.stop.prevent)
+        router-link(to="verify" class="btn btn-md block mt-8 w-full") Register
 
 </template>
 
