@@ -24,7 +24,7 @@ const state = {
     },
     login: {
         username: '',
-        pwd: '',
+        password: '',
     }
 }
 
@@ -38,7 +38,10 @@ const mutations = {
     },
     storeVerificationDetails(state, payload) {
         state.verify.token = payload
-    }
+    },
+    storeLoginDetails(state, payload) {
+        state.login = payload
+    },
 }
 
 const actions = {
@@ -51,6 +54,12 @@ const actions = {
     storeVerificationDetails: ({ commit }, payload) => {
         return new Promise((resolve) => {
             commit('storeVerificationDetails', payload)
+            setTimeout(() => { resolve(1)  }, 1000)
+        })
+    },
+    storeLoginDetails: ({ commit }, payload) => {
+        return new Promise((resolve) => {
+            commit('storeLoginDetails', payload)
             setTimeout(() => { resolve(1)  }, 1000)
         })
     },

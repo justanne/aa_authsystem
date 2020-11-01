@@ -124,7 +124,7 @@ export default {
           empty: 'Please enter the password again to confirm',
           unmatch: 'Password does not match',
         },
-      }
+      },
     }
   },
   components: {

@@ -2,25 +2,110 @@
   #login.aa-container
     h1(class="aa-heading-1") Login
     div(class="w-full mx-auto mt-6 text-left")
-      label(for="email" class="w-full") Email address
-        input(
-          id="email"
-          type="email"
-          class="textfield-md block my-2 mb-4"
-          autofocus
-        )
-      label(for="pwd" class="w-full") Pasword
-        input(
-          id="pwd"
-          type="password"
-          class="textfield-md block my-2 mb-4"
-        )
-      router-link(to="dashboard" class="btn btn-md block mt-8 w-full") Go to my Dashboard
+      div(class="w-full mb-4")
+        label(for="loginemail" class="w-full") Email address
+          input(
+            id="loginemail"
+            type="email"
+            v-model.lazy.trim="$v.loginemail.$model"
+            :class="['textfield-md block my-2', { 'border-field-error' : $v.loginemail.$error }]"
+            required
+            autofocus
+          )
+          small(
+            v-show="$v.loginemail.$error"
+            class="aa-notif-error inline-block w-full"
+            v-text="setNotificationMsg('loginemail')"
+          )
+      div(class="w-full mb-4")
+        label(for="loginpwd" class="w-full") Password
+          input(
+            id="loginpwd"
+            type="password"
+            v-model.lazy.trim="$v.loginpwd.$model"
+            :class="['textfield-md block my-2', { 'border-field-error' : $v.loginpwd.$error }]"
+            required
+          )
+          small(
+            v-show="$v.loginpwd.$error"
+            class="aa-notif-error inline-block w-full"
+            v-text="setNotificationMsg('loginpwd')"
+          )
+      a.btn.btn-md.block.mt-8.w-full(
+          @click.stop.prevent="validateFields()"
+        ) Login
 </template>
 
 <script>
-export default {
+import {
+  required,
+  email,
+} from 'vuelidate/lib/validators'
 
+export default {
+  data() {
+    return {
+      logindetails: {},
+      loginemail: '',
+      loginpwd: '',
+      notification: {
+        loginemail: {
+          empty: 'Email address is required to log in',
+          invalid: 'Please provide a valid email address',
+          postinvalid: 'Invalid credentials',
+        },
+        loginpwd: {
+          empty: 'Please input your password',
+          postinvalid: 'Invalid credentials',
+        },
+      },
+    }
+  },
+  validations: {
+    loginemail: {
+      required,
+      email
+    },
+    loginpwd: {
+      required,
+    },
+  },
+  methods: {
+    validateFields() {
+      this.$v.$touch()
+      this.storeDetails()
+    },
+    async storeDetails() {
+      if (this.$v.$anyError === false) {
+        this.logindetails = {
+          username: this.loginemail,
+          password: this.loginpwd
+        }
+        await this.$store.dispatch('storeLoginDetails', this.logindetails)
+          .then((reply) => {
+            if (reply) this.goToNextStep('dashboard')
+          })
+      }
+    },
+    goToNextStep(page) {
+      this.$router.push(page)
+    },
+    setNotificationMsg(field) {
+      if (field === 'loginemail') {
+        if (this.$v.loginemail.$model === '') {
+          return this.notification.loginemail.empty
+        }
+        else if (this.$v.loginemail.$error) {
+          return this.notification.loginemail.invalid
+        }
+      }
+      else if (field === 'loginpwd') {
+        if (this.$v.loginpwd.$model === '') {
+          return this.notification.loginpwd.empty
+        }
+      }
+    },
+  },
 }
 </script>
 

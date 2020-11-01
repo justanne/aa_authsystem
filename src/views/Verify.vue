@@ -54,10 +54,12 @@ export default {
       this.storeDetails()
     },
     async storeDetails() {
-      await this.$store.dispatch('storeVerificationDetails', this.verify)
-      .then((reply) => {
-        if (reply) this.goToNextStep('login')
-      })
+      if (this.$v.$anyError === false) {
+        await this.$store.dispatch('storeVerificationDetails', this.verify)
+        .then((reply) => {
+          if (reply) this.goToNextStep('login')
+        })
+      }
     },
     goToNextStep(page) {
       this.$router.push(page)
