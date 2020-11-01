@@ -1,6 +1,10 @@
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? './dist' : '/'
+}
+
+module.exports = {
   chainWebpack: config => {
      config.module
       .rule('pug')
@@ -19,8 +23,4 @@ module.exports = {
           return options
         })
   }
-}
-
-module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? './dist' : '/'
 }

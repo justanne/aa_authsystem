@@ -89,6 +89,7 @@ export const alphaNumWhiteSym = helpers.regex("alphaNumWhiteSym", /^[a-zA-Z0-9!@
 export default {
   data() {
     return {
+      register: {},
       email: '',
       fname: '',
       lname: '',
@@ -160,6 +161,25 @@ export default {
   methods: {
     validateFields() {
       this.$v.$touch()
+      this.storeDetails()
+    },
+    async storeDetails() {
+      if (this.$v.$anyError === false) {
+        this.register = {
+          email: this.email,
+          fname: this.fname,
+          lname: this.lname,
+          pwd  : this.pwd,
+          pwdc : this.pwdc,
+        }
+        await this.$store.dispatch('storeRegistrationDetails', this.register)
+          .then((reply) => {
+            if (reply) this.goToNextStep('verify')
+          })
+      }
+    },
+    goToNextStep(page) {
+      this.$router.push(page)
     },
     setNotificationMsg(field) {
       switch(field) {
