@@ -7,6 +7,10 @@ Vue.use(Vuex)
 Axios.defaults.headers.post['Accept'] = 'application/json'
 Axios.defaults.headers.post['Content-Type'] = 'application/json'
 
+const API_REGISTER_URL     = 'https://api.baseplate.appetiserdev.tech/api/v1/auth/register'
+const API_VERIFY_EMAIL_URL = 'https://api.baseplate.appetiserdev.tech/api/v1/auth/verification/verify'
+const API_LOGIN_URL        = 'https://api.baseplate.appetiserdev.tech/api/v1/auth/login'
+
 const state = {
     register: {
         email: '',
@@ -16,7 +20,7 @@ const state = {
     },
     verify: {
         token: '',
-        via: '',
+        via: 'email',
     },
     login: {
         username: '',
@@ -32,6 +36,9 @@ const mutations = {
         state.register.password              = payload.pwd
         state.register.password_confirmation = payload.pwdc
     },
+    storeVerificationDetails(state, payload) {
+        state.verify.token = payload
+    }
 }
 
 const actions = {
@@ -41,19 +48,51 @@ const actions = {
             setTimeout(() => { resolve(1)  }, 1000)
         })
     },
+    storeVerificationDetails: ({ commit }, payload) => {
+        return new Promise((resolve) => {
+            commit('storeVerificationDetails', payload)
+            setTimeout(() => { resolve(1)  }, 1000)
+        })
+    },
     registerUser: ({ state }) => {
         return new Promise((resolve, reject) => {
-            Axios.post('https://api.baseplate.appetiserdev.tech/api/v1/auth/register', state.register)
-                .then((reply) => {
+            Axios.post(API_REGISTER_URL, state.register)
+                .then(reply => {
                     console.log(reply)
                     resolve()
                 })
-                .catch((reply) => {
+                .catch(reply => {
                     console.error(reply)
                     reject()
                 })
         })
-    }
+    },
+    verifyUser: ({ state }) => {
+        return new Promise((resolve, reject) => {
+            Axios.post(API_VERIFY_EMAIL_URL, state.verify)
+                .then(reply => {
+                    console.log(reply)
+                    resolve()
+                })
+                .catch(reply => {
+                    console.log(reply)
+                    reject()
+                })
+        })
+    },
+    loginUser: ({ state }) => {
+        return new Promise((resolve, reject) => {
+            Axios.post(API_LOGIN_URL, state.login)
+                .then(reply => {
+                    console.log(reply)
+                    resolve()
+                })
+                .catch(reply => {
+                    console.log(reply)
+                    reject()
+                })
+        })
+    },
 }
 
 export default new Vuex.Store({

@@ -9,6 +9,8 @@
               type="email"
               v-model.lazy.trim="$v.email.$model"
               :class="['textfield-md block my-2', { 'border-field-error' : $v.email.$error }]"
+              required
+              autofocus
             )
             small(
               v-show="$v.email.$error"
@@ -23,6 +25,7 @@
               v-model.lazy.trim="$v.fname.$model"
               :class="['textfield-md block my-2', { 'border-field-error' : $v.fname.$error }]"
               class="textfield-md block my-2"
+              required
             )
             small(
               v-show="$v.fname.$error"
@@ -36,6 +39,7 @@
               type="text"
               v-model.lazy.trim="$v.lname.$model"
               :class="['textfield-md block my-2', { 'border-field-error' : $v.lname.$error }]"
+              required
             )
             small(
               v-show="$v.lname.$error"
@@ -49,6 +53,7 @@
               type="password"
               v-model.lazy.trim="$v.pwd.$model"
               :class="['textfield-md block my-2', { 'border-field-error' : $v.pwd.$error }]"
+              required
             )
             small(
               v-show="$v.pwd.$error"
@@ -62,6 +67,7 @@
               type="password"
               v-model.lazy.trim="$v.pwdc.$model"
               :class="['textfield-md block my-2', { 'border-field-error' : $v.pwdc.$error }]"
+              required
             )
             small(
               v-show="$v.pwdc.$error"
