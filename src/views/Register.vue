@@ -80,6 +80,7 @@ import {
   required,
   email,
   minLength,
+  sameAs,
 } from 'vuelidate/lib/validators'
 
 export const alphaNumWhite = helpers.regex("alphaNumWhite", /^[a-zA-Z0-9\s]*$/)
@@ -146,15 +147,15 @@ export default {
     pwdc: {
       required,
       alphaNumWhiteSym,
-      minLength: minLength(6),
+      sameAsPassword: sameAs('pwd')
     },
   },
   watch: {
     email: function() { this.setNotificationMsg('email') },
     fname: function() { this.setNotificationMsg('fname') },
     lname: function() { this.setNotificationMsg('lname') },
-    pwd: function() { this.setNotificationMsg('pwd') },
-    pwdc: function() { this.setNotificationMsg('pwdc') },
+    pwd  : function() { this.setNotificationMsg('pwd') },
+    pwdc : function() { this.setNotificationMsg('pwdc') },
   },
   methods: {
     validateFields() {
@@ -200,6 +201,9 @@ export default {
         case 'pwdc':
           if (this.$v.pwdc.$model === '') {
             return this.notification.pwdc.empty
+          }
+          else if (this.$v.pwdc.sameAsPassword === false) {
+            return this.notification.pwdc.unmatch
           }
           else if (this.$v.pwdc.$error) {
             return this.notification.pwdc.invalid
