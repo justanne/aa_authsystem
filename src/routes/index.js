@@ -31,6 +31,11 @@ const router = new Router({
             component: Dashboard,
             name: 'dashboard',
         },
+        {
+           path: '*',
+           name: 'catchAll',
+           component: Register
+        }
     ]
 })
 
