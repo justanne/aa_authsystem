@@ -16,12 +16,15 @@
           class="aa-notif-error inline-block w-full"
           v-text="setNotificationMsg()"
         )
-      a.btn.btn-md.block.mt-8.w-full(
-          @click.stop.prevent="validateFields()"
-        ) Proceed to Login
+      a(
+        :class="['btn btn-md block mt-8 w-full', { 'btn-disabled' : isStepBtnDisabled }]"
+        @click.stop.prevent="validateFields()"
+      ) {{ btnCtaText() }}
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import {
   required,
   numeric,
@@ -32,9 +35,13 @@ export default {
   data() {
     return {
       verify: '',
+      btnCtaTextMsg: {
+        default: 'Verify',
+        status : 'Verifying code...'
+      },
       notification: {
         verify: {
-          empty: 'Please enter the verification code sent to your email',
+          empty  : 'Please enter the verification code sent to your email',
           invalid: 'Invalid code',
           expired: 'The code have been expired. Request verification code again'
         }
@@ -48,17 +55,32 @@ export default {
       minLength: minLength(5)
     }
   },
+  computed: {
+    ...mapState({
+      isStepBtnDisabled: state => state.ui.isStepBtnDisabled
+    })
+  },
   methods: {
+    disableStepBtn() { this.$store.dispatch('disableStepBtn') },
+    enableStepBtn()  { this.$store.dispatch('enableStepBtn')  },
+
+    btnCtaText() {
+      return (this.isStepBtnDisabled) ? this.btnCtaTextMsg.status : this.btnCtaTextMsg.default
+    },
     validateFields() {
+      this.disableStepBtn()
       this.$v.$touch()
       this.storeDetails()
     },
     async storeDetails() {
-      if (this.$v.$anyError === false) {
+      if (this.$v.$anyError === false && this.isStepBtnDisabled) {
         await this.$store.dispatch('storeVerificationDetails', this.verify)
         .then((reply) => {
           if (reply) this.goToNextStep('login')
         })
+      }
+      else {
+        this.enableStepBtn()
       }
     },
     goToNextStep(page) {

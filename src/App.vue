@@ -96,17 +96,21 @@ input[type="tel"] {
   @apply bg-purple-700;
   @apply transition-all duration-300 ease-in-out;
 
-  &.btn-md {
-    @apply text-base;
-    @apply px-4;
-    @apply py-2;
-  }
   &:hover {
     @apply cursor-pointer;
     @apply bg-purple-600;
   }
   &:active {
     @apply bg-purple-800;
+  }
+  &.btn-md {
+    @apply text-base;
+    @apply px-4;
+    @apply py-2;
+  }
+  &.btn-disabled {
+    @apply opacity-25;
+    @apply pointer-events-none;
   }
 }
 
@@ -118,7 +122,6 @@ input[type="tel"] {
   @apply py-1;
   @apply rounded-sm;
 }
-
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;

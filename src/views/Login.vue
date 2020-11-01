@@ -2,6 +2,10 @@
   #login.aa-container
     h1(class="aa-heading-1") Login
     div(class="w-full mx-auto mt-6 text-left")
+      //- small(
+      //-   class="aa-notif-error inline-block w-full mb-4"
+      //-   v-text="'Credentials invalid'"
+      //- )
       div(class="w-full mb-4")
         label(for="loginemail" class="w-full") Email address
           input(
@@ -31,12 +35,15 @@
             class="aa-notif-error inline-block w-full"
             v-text="setNotificationMsg('loginpwd')"
           )
-      a.btn.btn-md.block.mt-8.w-full(
-          @click.stop.prevent="validateFields()"
-        ) Login
+      a(
+        :class="['btn btn-md block mt-8 w-full', { 'btn-disabled' : isStepBtnDisabled }]"
+        @click.stop.prevent="validateFields()"
+      ) {{ btnCtaText() }}
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import {
   required,
   email,
@@ -48,14 +55,18 @@ export default {
       logindetails: {},
       loginemail: '',
       loginpwd: '',
+      btnCtaTextMsg: {
+        default: 'Login',
+        status : 'Logging you in...'
+      },
       notification: {
         loginemail: {
-          empty: 'Email address is required to log in',
-          invalid: 'Please provide a valid email address',
+          empty      : 'Email address is required to log in',
+          invalid    : 'Please provide a valid email address',
           postinvalid: 'Invalid credentials',
         },
         loginpwd: {
-          empty: 'Please input your password',
+          empty      : 'Please input your password',
           postinvalid: 'Invalid credentials',
         },
       },
@@ -70,8 +81,20 @@ export default {
       required,
     },
   },
+  computed: {
+    ...mapState({
+      isStepBtnDisabled: state => state.ui.isStepBtnDisabled
+    })
+  },
   methods: {
+    disableStepBtn() { this.$store.dispatch('disableStepBtn') },
+    enableStepBtn()  { this.$store.dispatch('enableStepBtn')  },
+
+    btnCtaText() {
+      return (this.isStepBtnDisabled) ? this.btnCtaTextMsg.status : this.btnCtaTextMsg.default
+    },
     validateFields() {
+      this.disableStepBtn()
       this.$v.$touch()
       this.storeDetails()
     },
@@ -85,6 +108,9 @@ export default {
           .then((reply) => {
             if (reply) this.goToNextStep('dashboard')
           })
+      }
+      else {
+        this.enableStepBtn()
       }
     },
     goToNextStep(page) {

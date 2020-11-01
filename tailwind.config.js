@@ -227,7 +227,7 @@ module.exports = {
       // wait: 'wait',
       // text: 'text',
       // move: 'move',
-      // 'not-allowed': 'not-allowed',
+      'not-allowed': 'not-allowed',
     },
     divideColor: theme => theme('borderColor'),
     divideOpacity: theme => theme('borderOpacity'),
@@ -376,7 +376,7 @@ module.exports = {
     },
     opacity: {
       // '0': '0',
-      // '25': '0.25',
+      '25': '0.25',
       // '50': '0.5',
       // '75': '0.75',
       // '100': '1',

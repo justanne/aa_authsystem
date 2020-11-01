@@ -74,13 +74,15 @@
               class="aa-notif-error inline-block w-full"
               v-text="setNotificationMsg('pwdc')"
             )
-        a.btn.btn-md.block.mt-8.w-full(
+        a(
+          :class="['btn btn-md block mt-8 w-full', { 'btn-disabled' : isStepBtnDisabled }]"
           @click.stop.prevent="validateFields()"
-        ) Register
-
+        ) {{ btnCtaText() }}
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import {
   helpers,
   required,
@@ -101,35 +103,35 @@ export default {
       lname: '',
       pwd: '',
       pwdc: '',
+      btnCtaTextMsg: {
+        default: 'Register',
+        status : 'Creating your account...'
+      },
       notification: {
         email: {
-          empty: 'Email address is required',
+          empty  : 'Email address is required',
           invalid: 'Please provide a valid email address',
         },
         fname: {
-          empty: 'First name is required',
+          empty  : 'First name is required',
           invalid: 'Please provide your first name',
         },
         lname: {
-          empty: 'Last name is required',
+          empty  : 'Last name is required',
           invalid: 'Please provide your last name',
         },
         pwd  : {
-          empty: 'Please nominate a password',
+          empty    : 'Please nominate a password',
           minlength: 'Please provide at least 6 minimum characters',
-          invalid: 'Some characters are not supported, please try again',
-          unmatch: 'Password does not match',
+          invalid  : 'Some characters are not supported, please try again',
+          unmatch  : 'Password does not match',
         },
         pwdc : {
-          empty: 'Please enter the password again to confirm',
+          empty  : 'Please enter the password again to confirm',
           unmatch: 'Password does not match',
         },
       },
     }
-  },
-  components: {
-  },
-  mounted() {
   },
   validations: {
     email: {
@@ -157,6 +159,11 @@ export default {
       sameAsPassword: sameAs('pwd')
     },
   },
+  computed: {
+    ...mapState({
+      isStepBtnDisabled: state => state.ui.isStepBtnDisabled
+    })
+  },
   watch: {
     email: function() { this.setNotificationMsg('email') },
     fname: function() { this.setNotificationMsg('fname') },
@@ -165,12 +172,19 @@ export default {
     pwdc : function() { this.setNotificationMsg('pwdc') },
   },
   methods: {
+    disableStepBtn() { this.$store.dispatch('disableStepBtn') },
+    enableStepBtn()  { this.$store.dispatch('enableStepBtn')  },
+
+    btnCtaText() {
+      return (this.isStepBtnDisabled) ? this.btnCtaTextMsg.status : this.btnCtaTextMsg.default
+    },
     validateFields() {
+      this.disableStepBtn()
       this.$v.$touch()
       this.storeDetails()
     },
     async storeDetails() {
-      if (this.$v.$anyError === false) {
+      if (this.$v.$anyError === false && this.isStepBtnDisabled) {
         this.register = {
           email: this.email,
           fname: this.fname,
@@ -182,6 +196,9 @@ export default {
           .then((reply) => {
             if (reply) this.goToNextStep('verify')
           })
+      }
+      else {
+       this.enableStepBtn()
       }
     },
     goToNextStep(page) {

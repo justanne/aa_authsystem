@@ -12,6 +12,9 @@ const API_VERIFY_EMAIL_URL = 'https://api.baseplate.appetiserdev.tech/api/v1/aut
 const API_LOGIN_URL        = 'https://api.baseplate.appetiserdev.tech/api/v1/auth/login'
 
 const state = {
+    ui: {
+        isStepBtnDisabled: false,
+    },
     register: {
         email: '',
         full_name: '',
@@ -42,9 +45,21 @@ const mutations = {
     storeLoginDetails(state, payload) {
         state.login = payload
     },
+    enableStepBtn(state) {
+        state.ui.isStepBtnDisabled = false
+    },
+    disableStepBtn(state) {
+        state.ui.isStepBtnDisabled = true
+    },
 }
 
 const actions = {
+    disableStepBtn: ({ commit }) => {
+        commit('disableStepBtn')
+    },
+    enableStepBtn: ({ commit }) => {
+        commit('enableStepBtn')
+    },
     storeRegistrationDetails: ({ commit }, payload) => {
         return new Promise((resolve) => {
             commit('storeRegistrationDetails', payload)
