@@ -200,7 +200,10 @@ export default {
         }
         await this.$store.dispatch('storeRegistrationDetails', this.register)
           .then(reply => {
-            if (reply) this.goToNextStep('verify')
+            if (reply) {
+              this.notification.postErrorMsg = ''
+              this.goToNextStep('verify')
+            }
           })
           .catch(error => {
             console.log(error.message)

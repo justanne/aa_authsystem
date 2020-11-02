@@ -2,6 +2,11 @@
   #verify.aa-container
     h1(class="aa-heading-1") Verify your email
     div(class="w-full mx-auto mt-6 text-left")
+      small(
+        v-if="notification.postErrorMsg"
+        class="aa-notif-error inline-block w-full mb-4"
+        v-text="notification.postErrorMsg"
+      )
       label(for="vtoken" class="w-full") Verification code
         input(
           id="vtoken"
@@ -44,7 +49,8 @@ export default {
           empty  : 'Please enter the verification code sent to your email',
           invalid: 'Invalid format',
           expired: 'Verification failed. Request verification code again'
-        }
+        },
+        postErrorMsg: ''
       }
     }
   },
@@ -75,8 +81,15 @@ export default {
     async storeDetails() {
       if (this.$v.$anyError === false && this.isStepBtnDisabled) {
         await this.$store.dispatch('storeVerificationDetails', this.verify)
-        .then((reply) => {
-          if (reply) this.goToNextStep('login')
+        .then(reply => {
+          if (reply) {
+            this.notification.postErrorMsg = ''
+            this.goToNextStep('login')
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          this.notification.postErrorMsg = error
         })
       }
       else {

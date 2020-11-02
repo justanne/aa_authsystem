@@ -1,4 +1,5 @@
 import Axios from 'axios'
+// import { reject } from 'core-js/fn/promise';
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -72,16 +73,37 @@ const actions = {
                 })
         })
     },
-    storeVerificationDetails: ({ commit }, payload) => {
-        return new Promise(resolve => {
+    storeVerificationDetails: ({ commit, dispatch }, payload) => {
+        return new Promise((resolve, reject) => {
             commit('storeVerificationDetails', payload)
-            setTimeout(() => { resolve(1) }, 1000)
+            dispatch('verifyUser')
+                .then(reply => {
+                    console.log(reply)
+                    commit('enableStepBtn')
+                    resolve(1)
+                })
+                .catch(error => {
+                    console.log(error)
+                    commit('enableStepBtn')
+                    reject(error)
+                })
         })
     },
-    storeLoginDetails: ({ commit }, payload) => {
-        return new Promise((resolve) => {
+    storeLoginDetails: ({ commit, dispatch }, payload) => {
+        return new Promise((resolve, reject) => {
             commit('storeLoginDetails', payload)
-            setTimeout(() => { resolve(1)  }, 1000)
+
+            dispatch('loginUser')
+            .then(reply => {
+                console.log(reply)
+                commit('enableStepBtn')
+                resolve(1)
+            })
+            .catch(error => {
+                console.log(error)
+                commit('enableStepBtn')
+                reject(error)
+            })
         })
     },
     registerUser: () => {
@@ -95,34 +117,37 @@ const actions = {
                 })
                 .catch(error => {
                     console.log(error.responseText)
-                    // let errorObj = JSON.parse(error)
                     reject(error)
                 })
         })
     },
     verifyUser: ({ state }) => {
         return new Promise((resolve, reject) => {
-            Axios.post(API_VERIFY_EMAIL_URL, state.verify)
+            let postVerifyDetails = JSON.stringify(state.verify)
+
+            Axios.post(API_VERIFY_EMAIL_URL, postVerifyDetails)
                 .then(reply => {
                     console.log(reply)
-                    resolve()
+                    resolve(reply)
                 })
                 .catch(error => {
                     console.log(error)
-                    reject()
+                    reject(error)
                 })
         })
     },
     loginUser: ({ state }) => {
         return new Promise((resolve, reject) => {
-            Axios.post(API_LOGIN_URL, state.login)
+            let postLoginDetails = state.login
+
+            Axios.post(API_LOGIN_URL, postLoginDetails)
                 .then(reply => {
                     console.log(reply)
-                    resolve()
+                    resolve(reply)
                 })
                 .catch(error => {
                     console.log(error)
-                    reject()
+                    reject(error)
                 })
         })
     },

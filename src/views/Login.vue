@@ -3,8 +3,9 @@
     h1(class="aa-heading-1") Login
     div(class="w-full mx-auto mt-6 text-left")
       small(
+        v-if="notification.postErrorMsg"
         class="aa-notif-error inline-block w-full mb-4"
-        v-text="notification.loginpwd.postinvalid"
+        v-text="notification.postErrorMsg"
       )
       div(class="w-full mb-4")
         label(for="loginemail" class="w-full") Email address
@@ -72,6 +73,7 @@ export default {
           empty      : 'Please input your password',
           postinvalid: 'Invalid credentials',
         },
+        postErrorMsg: ''
       },
     }
   },
@@ -108,8 +110,13 @@ export default {
           password: this.loginpwd
         }
         await this.$store.dispatch('storeLoginDetails', this.logindetails)
-          .then((reply) => {
+          .then(reply => {
+            this.notification.postErrorMsg = ''
             if (reply) this.goToNextStep('dashboard')
+          })
+          .catch(error => {
+            console.log(error)
+            this.notification.postErrorMsg = error
           })
       }
       else {
