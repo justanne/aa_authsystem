@@ -1,7 +1,6 @@
 # Registration and Login System Demo
 
 ### Project setup
----
 
 1. Clone the repository
 ```
@@ -14,18 +13,18 @@ npm install
 ```
 
 
-#### Compiling for test and development
----
-Run
+### Compiling for test and development
+
+Run the following:
 ```
 npm run serve
 ```
 and access the `https://localhost:8080`
 
 
-#### Compiling for production
----
-Run
+### Compiling for production
+
+Run the following:
 ```
 npm run build
 ```
