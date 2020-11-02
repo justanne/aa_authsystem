@@ -1,24 +1,18 @@
-# aa_registersystem
+# Registration and Login System Demo
 
-## Project setup
+### Project setup
+---
+
+1. Clone the repository
+```
+git clone https://github.com/justanne/aa_authsystem.git
+```
+
+2. Navigate inside the directory (default: `aa_authsystem`) and install the dependencies
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+3. Compile the project for production
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+4. Access the app in the `/dist` directory by opening the `index.html`
