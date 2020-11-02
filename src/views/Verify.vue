@@ -61,8 +61,8 @@ export default {
     })
   },
   methods: {
-    disableStepBtn() { this.$store.dispatch('disableStepBtn') },
-    enableStepBtn()  { this.$store.dispatch('enableStepBtn')  },
+    disableStepBtn() { this.$store.commit('disableStepBtn') },
+    enableStepBtn()  { this.$store.commit('enableStepBtn')  },
 
     btnCtaText() {
       return (this.isStepBtnDisabled) ? this.btnCtaTextMsg.status : this.btnCtaTextMsg.default

@@ -2,6 +2,11 @@
   #register.aa-container
     h1(class="aa-heading-1") Register
       div(class="w-full mx-auto mt-6 text-left")
+        small(
+          v-if="notification.postErrorMsg"
+          class="aa-notif-error inline-block w-full mb-4"
+          v-text="notification.postErrorMsg"
+        )
         div(class="w-full mb-4")
           label(for="email" class="w-full") Email
             input(
@@ -122,7 +127,7 @@ export default {
         },
         pwd  : {
           empty    : 'Please nominate a password',
-          minlength: 'Please provide at least 6 minimum characters',
+          minlength: 'Please provide at least 8 minimum characters',
           invalid  : 'Some characters are not supported, please try again',
           unmatch  : 'Password does not match',
         },
@@ -130,6 +135,7 @@ export default {
           empty  : 'Please enter the password again to confirm',
           unmatch: 'Password does not match',
         },
+        postErrorMsg: ''
       },
     }
   },
@@ -151,7 +157,7 @@ export default {
     pwd: {
       required,
       alphaNumWhiteSym,
-      minLength: minLength(6),
+      minLength: minLength(8),
     },
     pwdc: {
       required,
@@ -172,8 +178,8 @@ export default {
     pwdc : function() { this.setNotificationMsg('pwdc') },
   },
   methods: {
-    disableStepBtn() { this.$store.dispatch('disableStepBtn') },
-    enableStepBtn()  { this.$store.dispatch('enableStepBtn')  },
+    disableStepBtn() { this.$store.commit('disableStepBtn') },
+    enableStepBtn()  { this.$store.commit('enableStepBtn')  },
 
     btnCtaText() {
       return (this.isStepBtnDisabled) ? this.btnCtaTextMsg.status : this.btnCtaTextMsg.default
@@ -193,8 +199,12 @@ export default {
           pwdc : this.pwdc,
         }
         await this.$store.dispatch('storeRegistrationDetails', this.register)
-          .then((reply) => {
+          .then(reply => {
             if (reply) this.goToNextStep('verify')
+          })
+          .catch(error => {
+            console.log(error.message)
+            this.notification.postErrorMsg = error.message
           })
       }
       else {

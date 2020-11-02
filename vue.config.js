@@ -1,7 +1,10 @@
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? './dist' : '/'
+  devServer: {
+    disableHostCheck: true,
+  },
+  publicPath: process.env.NODE_ENV === 'production' ? './dist/' : '/',
 }
 
 module.exports = {

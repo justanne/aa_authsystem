@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 Axios.defaults.headers.post['Accept'] = 'application/json'
 Axios.defaults.headers.post['Content-Type'] = 'application/json'
 
@@ -54,22 +55,27 @@ const mutations = {
 }
 
 const actions = {
-    disableStepBtn: ({ commit }) => {
-        commit('disableStepBtn')
-    },
-    enableStepBtn: ({ commit }) => {
-        commit('enableStepBtn')
-    },
-    storeRegistrationDetails: ({ commit }, payload) => {
-        return new Promise((resolve) => {
+    storeRegistrationDetails: ({ commit, dispatch }, payload) => {
+        return new Promise((resolve, reject) => {
             commit('storeRegistrationDetails', payload)
-            setTimeout(() => { resolve(1)  }, 1000)
+
+            dispatch('registerUser')
+                .then(reply => {
+                    console.log(reply)
+                    commit('enableStepBtn')
+                    resolve(1)
+                })
+                .catch(error => {
+                    console.log(error)
+                    commit('enableStepBtn')
+                    reject(error)
+                })
         })
     },
     storeVerificationDetails: ({ commit }, payload) => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             commit('storeVerificationDetails', payload)
-            setTimeout(() => { resolve(1)  }, 1000)
+            setTimeout(() => { resolve(1) }, 1000)
         })
     },
     storeLoginDetails: ({ commit }, payload) => {
@@ -78,16 +84,19 @@ const actions = {
             setTimeout(() => { resolve(1)  }, 1000)
         })
     },
-    registerUser: ({ state }) => {
+    registerUser: () => {
         return new Promise((resolve, reject) => {
-            Axios.post(API_REGISTER_URL, state.register)
+            let postRegisterDetails = JSON.stringify(state.register)
+
+            Axios.post(API_REGISTER_URL, postRegisterDetails)
                 .then(reply => {
-                    console.log(reply)
+                    console.log(reply.data.http_status)
                     resolve()
                 })
-                .catch(reply => {
-                    console.error(reply)
-                    reject()
+                .catch(error => {
+                    console.log(error.responseText)
+                    // let errorObj = JSON.parse(error)
+                    reject(error)
                 })
         })
     },
@@ -98,8 +107,8 @@ const actions = {
                     console.log(reply)
                     resolve()
                 })
-                .catch(reply => {
-                    console.log(reply)
+                .catch(error => {
+                    console.log(error)
                     reject()
                 })
         })
@@ -111,8 +120,8 @@ const actions = {
                     console.log(reply)
                     resolve()
                 })
-                .catch(reply => {
-                    console.log(reply)
+                .catch(error => {
+                    console.log(error)
                     reject()
                 })
         })
