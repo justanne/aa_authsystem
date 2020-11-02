@@ -13,6 +13,20 @@ git clone https://github.com/justanne/aa_authsystem.git
 npm install
 ```
 
-3. Compile the project for production
 
-4. Access the app in the `/dist` directory by opening the `index.html`
+#### Compiling for test and development
+---
+Run
+```
+npm run serve
+```
+and access the `https://localhost:8080`
+
+
+#### Compiling for production
+---
+Run
+```
+npm run build
+```
+and copy the contents of the `/dist` folder to your server
