@@ -206,7 +206,6 @@ export default {
             }
           })
           .catch(error => {
-            console.log(error.message)
             this.notification.postErrorMsg = error.message
           })
       }

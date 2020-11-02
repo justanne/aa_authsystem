@@ -61,13 +61,11 @@ const actions = {
             commit('storeRegistrationDetails', payload)
 
             dispatch('registerUser')
-                .then(reply => {
-                    console.log(reply)
+                .then(() => {
                     commit('enableStepBtn')
                     resolve(1)
                 })
                 .catch(error => {
-                    console.log(error)
                     commit('enableStepBtn')
                     reject(error)
                 })
@@ -77,13 +75,11 @@ const actions = {
         return new Promise((resolve, reject) => {
             commit('storeVerificationDetails', payload)
             dispatch('verifyUser')
-                .then(reply => {
-                    console.log(reply)
+                .then(() => {
                     commit('enableStepBtn')
                     resolve(1)
                 })
                 .catch(error => {
-                    console.log(error)
                     commit('enableStepBtn')
                     reject(error)
                 })
@@ -94,13 +90,10 @@ const actions = {
             commit('storeLoginDetails', payload)
 
             dispatch('loginUser')
-            .then(reply => {
-                console.log(reply)
-                commit('enableStepBtn')
+            .then(() => {
                 resolve(1)
             })
             .catch(error => {
-                console.log(error)
                 commit('enableStepBtn')
                 reject(error)
             })
@@ -111,12 +104,10 @@ const actions = {
             let postRegisterDetails = JSON.stringify(state.register)
 
             Axios.post(API_REGISTER_URL, postRegisterDetails)
-                .then(reply => {
-                    console.log(reply.data.http_status)
+                .then(() => {
                     resolve()
                 })
                 .catch(error => {
-                    console.log(error.responseText)
                     reject(error)
                 })
         })
@@ -126,12 +117,10 @@ const actions = {
             let postVerifyDetails = JSON.stringify(state.verify)
 
             Axios.post(API_VERIFY_EMAIL_URL, postVerifyDetails)
-                .then(reply => {
-                    console.log(reply)
-                    resolve(reply)
+                .then(() => {
+                    resolve()
                 })
                 .catch(error => {
-                    console.log(error)
                     reject(error)
                 })
         })
@@ -141,12 +130,10 @@ const actions = {
             let postLoginDetails = state.login
 
             Axios.post(API_LOGIN_URL, postLoginDetails)
-                .then(reply => {
-                    console.log(reply)
-                    resolve(reply)
+                .then(() => {
+                    resolve()
                 })
                 .catch(error => {
-                    console.log(error)
                     reject(error)
                 })
         })

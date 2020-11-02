@@ -115,7 +115,6 @@ export default {
             if (reply) this.goToNextStep('dashboard')
           })
           .catch(error => {
-            console.log(error)
             this.notification.postErrorMsg = error
           })
       }
