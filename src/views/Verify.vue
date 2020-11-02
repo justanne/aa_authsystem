@@ -42,8 +42,8 @@ export default {
       notification: {
         verify: {
           empty  : 'Please enter the verification code sent to your email',
-          invalid: 'Invalid code',
-          expired: 'The code have been expired. Request verification code again'
+          invalid: 'Invalid format',
+          expired: 'Verification failed. Request verification code again'
         }
       }
     }

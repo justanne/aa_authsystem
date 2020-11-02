@@ -1,5 +1,5 @@
 <template lang="pug">
-  #dashboard.aa-container Dashboard/Success page
+  #dashboard.aa-container Log in successful!
 </template>
 
 <script>

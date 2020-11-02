@@ -116,7 +116,6 @@ input[type="tel"] {
 
 .aa-notif-error {
   @apply bg-orange-200;
-  @apply border-orange-700;
   @apply text-orange-700;
   @apply px-2;
   @apply py-1;

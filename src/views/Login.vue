@@ -2,10 +2,10 @@
   #login.aa-container
     h1(class="aa-heading-1") Login
     div(class="w-full mx-auto mt-6 text-left")
-      //- small(
-      //-   class="aa-notif-error inline-block w-full mb-4"
-      //-   v-text="'Credentials invalid'"
-      //- )
+      small(
+        class="aa-notif-error inline-block w-full mb-4"
+        v-text="notification.loginpwd.postinvalid"
+      )
       div(class="w-full mb-4")
         label(for="loginemail" class="w-full") Email address
           input(
@@ -55,6 +55,9 @@ export default {
       logindetails: {},
       loginemail: '',
       loginpwd: '',
+      postdata: {
+        message: 'Invalid'
+      },
       btnCtaTextMsg: {
         default: 'Login',
         status : 'Logging you in...'
