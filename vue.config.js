@@ -4,10 +4,6 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
   },
-  publicPath: process.env.NODE_ENV === 'production' ? './dist/' : '/',
-}
-
-module.exports = {
   chainWebpack: config => {
      config.module
       .rule('pug')
@@ -25,5 +21,6 @@ module.exports = {
           }
           return options
         })
-  }
+  },
+  publicPath: process.env.NODE_ENV === 'production' ? '/dist/' : '/',
 }
